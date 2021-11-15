@@ -1,4 +1,10 @@
-const { Client, Intents, Collection } = require("discord.js");
+const {
+  Client,
+  Intents,
+  Collection,
+  MessageAttachment,
+  MessageEmbed,
+} = require("discord.js");
 require("dotenv").config();
 
 const intents = new Intents(32767);
@@ -10,6 +16,7 @@ const client = new Client({
 client.commands = new Collection();
 
 const fs = require("fs");
+const path = require("path");
 fs.readdirSync("./Commands").filter((file) =>
   file.endsWith(".js").forEach((file) => {
     const command = require(`./Commands/${file}`);
@@ -19,6 +26,10 @@ fs.readdirSync("./Commands").filter((file) =>
 );
 
 const prefix = "!";
+//const image = new MessageAttachment("./images/Christina-Applegate.jpg");
+const embed = new MessageEmbed()
+  .setTitle("title")
+  .setThumbnail("attachment://Christina-Applegate.jpg");
 
 client.on("ready", () => {
   console.log("bot online");
@@ -34,7 +45,11 @@ client.on("messageCreate", async (message) => {
   console.log(args);
   switch (args[0].toLowerCase()) {
     case "shoutout":
-      message.reply("Let's give a quick shoutout to Christina Applegate!");
+      //const image = new MessageAttachment("./images/Christina-Applegate.jpg");
+      message.channel.send({
+        content: "Let's give a quick shoutout to Christina Applegate!",
+        files: ["./images/Christina-Applegate.jpg"],
+      });
   }
 });
 
