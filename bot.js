@@ -1,16 +1,19 @@
 const {
   Client,
-  Intents,
   Collection,
+  GatewayIntentBits,
+  Events,
   MessageAttachment,
   MessageEmbed,
 } = require("discord.js");
 require("dotenv").config();
 
-const intents = new Intents(32767);
-
 const client = new Client({
-  intents,
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
 });
 
 client.commands = new Collection();
@@ -32,7 +35,7 @@ let frequency = 5;
 client.on("ready", () => {
   console.log("bot online");
   client.user.setPresence({
-    activities: [{ name: "Christina Applegate", type: "WATCHING" }],
+    activities: [{ name: "Eric Andre", type: "WATCHING" }],
   });
 });
 
@@ -50,6 +53,7 @@ client.on("messageCreate", async (message) => {
   }
   const args = message.content.substring(process.env.PREFIX.length).split(/ +/);
   console.log(args);
+  console.log(frequency);
   switch (args[0].toLowerCase()) {
     case "shoutout":
       message.channel.send({
