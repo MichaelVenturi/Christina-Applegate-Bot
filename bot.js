@@ -8,6 +8,9 @@ const {
 } = require("discord.js");
 require("dotenv").config();
 
+const fs = require("fs");
+const path = require("path");
+
 const LegacyShoutout = require("./LegacyFunctions/LegacyShoutout");
 
 const client = new Client({
@@ -20,16 +23,14 @@ const client = new Client({
 
 client.commands = new Collection();
 
-const fs = require("fs");
-const path = require("path");
-
-fs.readdirSync("./Commands").filter((file) =>
-  file.endsWith(".js").forEach((file) => {
-    const command = require(`./Commands/${file}`);
-    console.log(`Command ${command.name} loaded`);
-    client.commands.set(command.name, command);
-  })
-);
+const commandFiles = fs
+  .readdirSync("./Commands")
+  .filter((file) => file.endsWith(".js"));
+for (const file of commandFiles) {
+  const command = require(`./Commands/${file}`);
+  console.log(`Command ${command.data.name} loaded`);
+  client.commands.set(command.data.name, command);
+}
 
 client.shoutoutFreq = 10;
 
@@ -44,6 +45,8 @@ client.on("messageCreate", async (message) => {
   LegacyShoutout(client, message);
 });
 
-client.on("interactionCreate", async (interaction) => {});
+client.on("interactionCreate", async (interaction) => {
+  console.log(interaction);
+});
 
 client.login(process.env.TOKEN);

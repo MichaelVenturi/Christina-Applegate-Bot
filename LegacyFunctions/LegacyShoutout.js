@@ -3,7 +3,10 @@ module.exports = (client, message) => {
   if (message.author.bot || message.channel.type == "DM") return;
   // Only respond to the bot's command prefix
   if (!message.content.startsWith(process.env.PREFIX)) {
-    if (Math.floor(Math.random() * frequency) + 1 == frequency) {
+    if (
+      Math.floor(Math.random() * client.shoutoutFreq) + 1 ==
+      client.shoutoutFreq
+    ) {
       message.channel.send({
         content: "Let's give a quick shoutout to Christina Applegate!",
         files: ["./images/Christina-Applegate.jpg"],
